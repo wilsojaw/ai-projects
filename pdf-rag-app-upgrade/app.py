@@ -1,7 +1,7 @@
 import streamlit as st
 from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import Chroma
+from langchain.vectorstores import FAISS
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.chains import RetrievalQA
 from langchain.llms import HuggingFaceHub
@@ -29,12 +29,7 @@ if uploaded_files:
         chunks = splitter.split_documents(docs)
 
         embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-        persist_dir = tempfile.mkdtemp()
-        vectorstore = Chroma.from_documents(
-            chunks,
-            embeddings,
-            persist_directory=persist_dir
-        )
+        vectorstore = FAISS.from_documents(chunks, embeddings)
 
         llm = HuggingFaceHub(
             repo_id="google/flan-t5-xl",
