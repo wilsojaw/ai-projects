@@ -6,3 +6,4 @@ huggingface-hub
 pypdf
 python-dotenv
 langchain-community
+faiss-cpu
