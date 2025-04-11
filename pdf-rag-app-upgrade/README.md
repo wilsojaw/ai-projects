@@ -3,19 +3,29 @@
 This is a multi-PDF Q&A app built with [LangChain](https://www.langchain.com/), [Streamlit](https://streamlit.io), and [Hugging Face](https://huggingface.co/).
 
 ## Features
-- Upload multiple PDF files
-- Ask natural language questions
-- Answers pulled from document chunks using RAG
-- Powered by Hugging Face LLMs + Sentence Transformers
-- Live Streamlit interface
+- Upload **one or more PDFs**
+- Ask **natural language questions**
+- Get **smart answers with source references**
+- Powered by:
+  - [LangChain](https://www.langchain.com/)
+  - [FAISS](https://github.com/facebookresearch/faiss)
+  - [Hugging Face Transformers](https://huggingface.co/)
+  - [Streamlit](https://streamlit.io/)
 
 ## Tech Stack
 - Python
 - LangChain
 - Streamlit
 - Hugging Face Hub (Flan-T5 model)
-- Chroma for vector search
+- FAISS for vector search
 - HuggingFaceEmbeddings (MiniLM-L6-v2)
+
+## How It Works
+
+1. PDFs are loaded and split into chunks.
+2. Each chunk is embedded using `all-MiniLM-L6-v2`.
+3. FAISS indexes the chunks for fast semantic retrieval.
+4. A `flan-t5-large` model answers your question based on the top `k=3` relevant chunks.
 
 ## How to Run Locally
 
