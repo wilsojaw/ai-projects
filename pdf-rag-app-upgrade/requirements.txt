@@ -5,3 +5,4 @@ sentence-transformers
 huggingface-hub
 pypdf
 python-dotenv
+langchain-community
