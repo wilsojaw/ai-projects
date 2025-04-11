@@ -32,7 +32,7 @@ if uploaded_files:
         vectorstore = FAISS.from_documents(chunks, embeddings)
 
         llm = HuggingFaceHub(
-            repo_id="google/flan-t5-xl",
+            repo_id="google/flan-t5-large",
             model_kwargs={"temperature": 0.3, "max_length": 512},
             task="text-generation"
         )
