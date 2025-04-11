@@ -8,7 +8,6 @@ from langchain.llms import HuggingFaceHub
 from dotenv import load_dotenv
 import tempfile
 import os
-import tempfile
 
 load_dotenv()
 
@@ -30,7 +29,12 @@ if uploaded_files:
         chunks = splitter.split_documents(docs)
 
         embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-        vectorstore = Chroma.from_documents(chunks, embeddings)
+        persist_dir = tempfile.mkdtemp()
+        vectorstore = Chroma.from_documents(
+            chunks,
+            embeddings,
+            persist_directory=persist_dir
+        )
 
         llm = HuggingFaceHub(
             repo_id="google/flan-t5-xl",
