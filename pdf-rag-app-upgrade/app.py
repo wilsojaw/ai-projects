@@ -1,18 +1,3 @@
-import streamlit as st
-from langchain.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import Chroma
-from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.chains import RetrievalQA
-from langchain.llms import HuggingFaceHub
-from dotenv import load_dotenv
-import tempfile
-import os
-
-load_dotenv()
-
-st.set_page_config(page_title="📄 PDF Q&A App", layout="wide")
-st.title("🧠 Ask Questions About Your PDFs")
 
 uploaded_files = st.file_uploader("Upload PDF files", type="pdf", accept_multiple_files=True)
 
@@ -29,8 +14,15 @@ if uploaded_files:
         chunks = splitter.split_documents(docs)
 
         embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-        vectorstore = Chroma.from_documents(chunks, embeddings)
+        
+        persist_dir = tempfile.mkdtemp()
 
+        vectorstore = Chroma.from_documents(
+            chunks,
+            embeddings,
+            persist_directory=persist_dir
+        )
+        
         llm = HuggingFaceHub(
             repo_id="google/flan-t5-xl",
             model_kwargs={"temperature": 0.3, "max_length": 512},
